@@ -1,7 +1,8 @@
 import React from "react";
+import Body from "./Body";
 
 const App = () => {
-    return <div className="text-3xl text-red-500">Netflix GPT</div>;
+    return <Body />;
 };
 
 export default App;
