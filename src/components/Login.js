@@ -1,8 +1,94 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import Header from "./Header";
+import { checkValidData } from "../utils/validate";
+import {
+    createUserWithEmailAndPassword,
+    signInWithEmailAndPassword,
+    updateProfile,
+} from "firebase/auth";
+import { auth } from "../utils/firebase";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { addUser } from "../utils/userSlice";
 
 const Login = () => {
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
     const [isSignInForm, setIsSignInForm] = useState(true);
+    const [errorMessage, setErrorMessage] = useState(null);
+
+    const email = useRef(null);
+    const password = useRef(null);
+
+    const handleButtonClick = () => {
+        //validate the form data
+        const message = checkValidData(
+            email.current.value,
+            password.current.value
+        );
+        setErrorMessage(message);
+        if (message) return;
+
+        //signup/signin logic
+        if (!isSignInForm) {
+            //signup logic
+            createUserWithEmailAndPassword(
+                auth,
+                email.current.value,
+                password.current.value
+            )
+                .then((userCredential) => {
+                    // Signed in
+                    const user = userCredential.user;
+                    console.log(user);
+                    updateProfile(user, {
+                        displayName: "name.current.value",
+                        photoURL:
+                            "https://cdn-icons-png.flaticon.com/128/4140/4140048.png",
+                    })
+                        .then(() => {
+                            const { uid, email, displayName, photoURL } =
+                                auth.currentUser;
+                            dispatch(
+                                addUser({
+                                    uid: uid,
+                                    email: email,
+                                    displayName: displayName,
+                                    photoURL: photoURL,
+                                })
+                            );
+
+                            navigate("/browse");
+                        })
+                        .catch((error) => {
+                            setErrorMessage(error.message);
+                        });
+                })
+                .catch((error) => {
+                    const errorCode = error.code;
+                    const errorMessage = error.message;
+                    setErrorMessage(errorCode + "-" + errorMessage);
+                });
+        } else {
+            //signin logic
+            signInWithEmailAndPassword(
+                auth,
+                email.current.value,
+                password.current.value
+            )
+                .then((userCredential) => {
+                    // Signed in
+                    const user = userCredential.user;
+                    console.log(user);
+                    navigate("/browse");
+                })
+                .catch((error) => {
+                    const errorCode = error.code;
+                    const errorMessage = error.message;
+                    setErrorMessage(errorCode + "-" + errorMessage);
+                });
+        }
+    };
     const toggleSignInForm = () => {
         setIsSignInForm(!isSignInForm);
     };
@@ -17,7 +103,10 @@ const Login = () => {
                 />
             </div>
 
-            <form className="absolute my-12 mx-auto right-0 left-0 p-6 sm:p-12 bg-black bg-opacity-75 w-11/12 md:w-3/12 text-white ">
+            <form
+                onSubmit={(e) => e.preventDefault()}
+                className="absolute my-12 mx-auto right-0 left-0 p-6 sm:p-12 bg-black bg-opacity-75 w-11/12 md:w-3/12 text-white  mt-36 "
+            >
                 <h1 className="font-bold text-2xl sm:text-4xl py-4 sm:py-6 pl-2">
                     {isSignInForm ? "Sign In" : "Sign Up"}
                 </h1>
@@ -31,16 +120,19 @@ const Login = () => {
                         />
                     )}
                     <input
+                        ref={email}
                         type="Email"
                         placeholder="Email or phone number"
                         className="p-2 mb-2 bg-gray-800 h-12 text-gray-300 rounded-md"
                     />
 
                     <input
+                        ref={password}
                         type="password"
                         placeholder="Password"
                         className="p-2 mb-2 sm:mt-2 bg-gray-800 h-12 text-gray-300 rounded-md"
                     />
+                    <p className="text-red-500">{errorMessage}</p>
 
                     {!isSignInForm && (
                         <input
@@ -50,7 +142,10 @@ const Login = () => {
                         />
                     )}
 
-                    <button className="font-semibold h-12 bg-red-600 text-white rounded-md mt-6">
+                    <button
+                        className="font-semibold h-12 bg-red-600 text-white rounded-md mt-6"
+                        onClick={handleButtonClick}
+                    >
                         {isSignInForm ? "Sign In" : "Sign Up"}
                     </button>
 
