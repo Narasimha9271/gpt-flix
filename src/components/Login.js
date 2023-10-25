@@ -10,6 +10,7 @@ import { auth } from "../utils/firebase";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { addUser } from "../utils/userSlice";
+import { BACKGROUND_IMG, USER_ICON } from "../utils/constants";
 
 const Login = () => {
     const navigate = useNavigate();
@@ -40,11 +41,10 @@ const Login = () => {
                 .then((userCredential) => {
                     // Signed in
                     const user = userCredential.user;
-                    console.log(user);
+                    //console.log(user);
                     updateProfile(user, {
                         displayName: "name.current.value",
-                        photoURL:
-                            "https://cdn-icons-png.flaticon.com/128/4140/4140048.png",
+                        photoURL: USER_ICON,
                     })
                         .then(() => {
                             const { uid, email, displayName, photoURL } =
@@ -78,9 +78,8 @@ const Login = () => {
             )
                 .then((userCredential) => {
                     // Signed in
+                    // eslint-disable-next-line no-unused-vars
                     const user = userCredential.user;
-                    console.log(user);
-                    navigate("/browse");
                 })
                 .catch((error) => {
                     const errorCode = error.code;
@@ -98,7 +97,7 @@ const Login = () => {
             <div className="absolute w-full h-full">
                 <img
                     className="w-full h-full object-cover"
-                    src="https://assets.nflxext.com/ffe/siteui/vlv3/855ed6e2-d9f1-4afd-90da-96023ec747c3/85eb5b91-25ed-4965-ace9-ba8e4a0ead8d/IN-en-20230828-popsignuptwoweeks-perspective_alpha_website_medium.jpg"
+                    src={BACKGROUND_IMG}
                     alt="netflix-logo"
                 />
             </div>
