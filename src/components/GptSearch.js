@@ -13,6 +13,7 @@ export default function GptSearch() {
                     alt="netflix-logo"
                 />
             </div>
+
             <GptSearchBar />
             <GptMovieSuggestions />
         </div>
