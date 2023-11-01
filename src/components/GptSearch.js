@@ -6,7 +6,7 @@ import { BACKGROUND_IMG } from "../utils/constants";
 export default function GptSearch() {
     return (
         <div>
-            <div className="absolute w-full h-full">
+            <div className="fixed w-full h-full -z-10">
                 <img
                     className="w-full h-full object-cover"
                     src={BACKGROUND_IMG}
