@@ -1,5 +1,5 @@
 import React from "react";
-import { AiFillPlayCircle, AiFillInfoCircle } from "react-icons/ai";
+import { AiFillPlayCircle, AiOutlineInfoCircle } from "react-icons/ai";
 const VideoTitle = ({ title, overview }) => {
     return (
         <div className="w-screen aspect-video pt-[10%] px-6 md:px-24 absolute text-white bg-gradient-to-r from-black">
@@ -8,17 +8,18 @@ const VideoTitle = ({ title, overview }) => {
                 {overview}
             </p>
             <div className="mt-2 flex flex-row gap-2">
-                <button className="bg-white text-black p-2 md:py-1 px-2 text-xl bg-opacity-90 rounded-md hover:bg-opacity-80 flex flex-row gap-1">
-                    <div className="pt-1 ">
+                <button className="bg-white text-black p-2 px-2 text-xl md:py-2 md:h-12 bg-opacity-90 rounded-md hover:bg-opacity-80 flex flex-row gap-1">
+                    <div className="pt-1">
                         <AiFillPlayCircle />
                     </div>{" "}
                     <div>Play</div>
                 </button>
-                <button className="hidden md:inline-block bg-gray-500 text-white p-4 px-8 text-xl bg-opacity-50 rounded-md flex-row gap-1">
-                    <div className="pt-1 ">
-                        <AiFillInfoCircle />
-                    </div>{" "}
-                    <div>More Info</div>
+                <button className="hidden md:inline-block mx-1 relative bg-gray-500 text-white p-2 ps-14 px-6 text-xl rounded-lg bg-opacity-50  ">
+                    {" "}
+                    <span className="absolute left-5 top-2 text-3xl">
+                        <AiOutlineInfoCircle />
+                    </span>{" "}
+                    More Info
                 </button>
             </div>
         </div>
