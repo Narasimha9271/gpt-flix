@@ -1,8 +1,8 @@
 import React from "react";
 import MovieCard from "./MovieCard";
+import { Link } from "react-router-dom";
 
 const MovieList = ({ title, movies }) => {
-    //console.log(movies);
     return (
         <div className="px-5 ">
             <h1 className="py-4 text-lg font-semibold md:text-3xl text-white ">
@@ -12,10 +12,9 @@ const MovieList = ({ title, movies }) => {
             <div className="flex overflow-x-hidden hover:overflow-x-scroll scrollbar-hide">
                 <div className="flex flex-row gap-2">
                     {movies?.map((movie) => (
-                        <MovieCard
-                            key={movie.id}
-                            posterPath={movie.poster_path}
-                        />
+                        <Link key={movie.id} to={"/watch?v=" + movie.id}>
+                            <MovieCard posterPath={movie.poster_path} />
+                        </Link>
                     ))}
                 </div>
             </div>
