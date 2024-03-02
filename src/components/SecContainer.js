@@ -2,7 +2,7 @@ import React from "react";
 import MovieList from "./MovieList";
 import { useSelector } from "react-redux";
 
-const SecondaryContainer = () => {
+const SecContainer = () => {
     const movies = useSelector((store) => store.movies);
     return (
         movies && (
@@ -30,4 +30,4 @@ const SecondaryContainer = () => {
     );
 };
 
-export default SecondaryContainer;
+export default SecContainer;
