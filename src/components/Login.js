@@ -20,6 +20,7 @@ const Login = () => {
 
     const email = useRef(null);
     const password = useRef(null);
+    const name = useRef(null);
 
     const handleButtonClick = () => {
         //validate the form data
@@ -41,9 +42,8 @@ const Login = () => {
                 .then((userCredential) => {
                     // Signed in
                     const user = userCredential.user;
-                    //console.log(user);
                     updateProfile(user, {
-                        displayName: "name.current.value",
+                        displayName: name.current.value,
                         photoURL: USER_ICON,
                     })
                         .then(() => {
@@ -58,7 +58,7 @@ const Login = () => {
                                 })
                             );
 
-                            navigate("/browse");
+                            // navigate("/browse");
                         })
                         .catch((error) => {
                             setErrorMessage(error.message);
@@ -78,7 +78,6 @@ const Login = () => {
             )
                 .then((userCredential) => {
                     // Signed in
-                    // eslint-disable-next-line no-unused-vars
                     const user = userCredential.user;
                 })
                 .catch((error) => {
@@ -88,15 +87,15 @@ const Login = () => {
                 });
         }
     };
-    const toggleSignInForm = () => {
+    const toggleSignIn = () => {
         setIsSignInForm(!isSignInForm);
     };
     return (
-        <div>
+        <div className="relative">
             <Header />
-            <div className="absolute w-full h-full">
+            <div>
                 <img
-                    className="w-full h-full object-cover"
+                    className="md:h-auto h-screen object-cover"
                     src={BACKGROUND_IMG}
                     alt="netflix-logo"
                 />
@@ -104,64 +103,46 @@ const Login = () => {
 
             <form
                 onSubmit={(e) => e.preventDefault()}
-                className="absolute my-12 mx-auto right-0 left-0 p-6 sm:p-12 bg-black bg-opacity-75 w-11/12 md:w-3/12 text-white  mt-36 "
+                className="bg-black w-screen absolute top-36  md:w-3/12 md:absolute md:top-1/2 md:left-1/2  p-12  md:-translate-x-1/2 md:-translate-y-1/2 bg-opacity-85"
             >
-                <h1 className="font-bold text-2xl sm:text-4xl py-4 sm:py-6 pl-2">
+                <h2 className="text-white text-3xl py-4">
                     {isSignInForm ? "Sign In" : "Sign Up"}
-                </h1>
-
-                <div className="flex flex-col">
-                    {!isSignInForm && (
-                        <input
-                            type="text"
-                            placeholder=" Full Name"
-                            className="p-2 mb-2 sm:mb-3 bg-gray-800 h-12 text-gray-300 rounded-md"
-                        />
-                    )}
+                </h2>
+                {!isSignInForm && (
                     <input
-                        ref={email}
-                        type="Email"
-                        placeholder="Email or phone number"
-                        className="p-2 mb-2 bg-gray-800 h-12 text-gray-300 rounded-md"
+                        ref={name}
+                        type="text"
+                        placeholder="Full Name"
+                        className=" text-white p-4 my-4 w-full bg-gray-800 rounded"
                     />
-
-                    <input
-                        ref={password}
-                        type="password"
-                        placeholder="Password"
-                        className="p-2 mb-2 sm:mt-2 bg-gray-800 h-12 text-gray-300 rounded-md"
-                    />
-                    <p className="text-red-500">{errorMessage}</p>
-
-                    {!isSignInForm && (
-                        <input
-                            type="password"
-                            placeholder="Confirm Password"
-                            className="p-2 mt-2 sm:mt-3 bg-gray-800 h-12 text-gray-300 rounded-md"
-                        />
-                    )}
-
-                    <button
-                        className="font-semibold h-12 bg-red-600 text-white rounded-md mt-6"
-                        onClick={handleButtonClick}
-                    >
-                        {isSignInForm ? "Sign In" : "Sign Up"}
-                    </button>
-
-                    <div className="flex flex-col sm:flex-row justify-center items-center mt-4">
-                        <p className="text-gray-500 font-medium mb-2 sm:mb-0">
-                            {isSignInForm
-                                ? "New to Netflix?"
-                                : "Already registered?"}
-                        </p>
-                        <p
-                            className="font-medium cursor-pointer"
-                            onClick={toggleSignInForm}
-                        >
-                            {!isSignInForm ? "Sign In" : "Sign Up"} Now
-                        </p>
-                    </div>
-                </div>
+                )}
+                <input
+                    ref={email}
+                    type="text"
+                    placeholder="Email Address"
+                    className="text-white p-4 my-4 w-full bg-gray-800 rounded"
+                />
+                <input
+                    ref={password}
+                    type="password"
+                    placeholder="Password"
+                    className="text-white p-4 my-4 w-full  bg-gray-800 rounded"
+                />
+                <p className="text-red-600 font-bold">{errorMessage}</p>
+                <button
+                    className="p-4 my-6 rounded bg-red-700 w-full text-white"
+                    onClick={handleButtonClick}
+                >
+                    {isSignInForm ? "Sign In" : "Sign Up"}
+                </button>
+                <p
+                    className=" text-gray-600 cursor-pointer"
+                    onClick={toggleSignIn}
+                >
+                    {isSignInForm
+                        ? "New to Netflix? Sign up"
+                        : "Already registered? Sign In"}
+                </p>
             </form>
         </div>
     );
