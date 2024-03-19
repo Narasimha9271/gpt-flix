@@ -129,6 +129,16 @@ const Login = () => {
                     className="text-white p-4 my-4 w-full  bg-gray-800 rounded"
                 />
                 <p className="text-red-600 font-bold">{errorMessage}</p>
+                {isSignInForm && (
+                    <span className="text-white">
+                        <div>
+                            <b>Test email:</b> test@gmail.com
+                        </div>
+                        <div>
+                            <b>password:</b> Test@123
+                        </div>
+                    </span>
+                )}
                 <button
                     className="p-4 my-6 rounded bg-red-700 w-full text-white"
                     onClick={handleButtonClick}
